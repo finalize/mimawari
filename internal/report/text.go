@@ -109,6 +109,19 @@ func Text(s model.Snapshot, color bool) string {
 // 先に詰めてから色を付ける。
 const siteCellWidth = 15
 
+// AttentionText は手を動かすところだけをタブ区切りで返す。
+//
+// awk や cut に流せる形にしてある。色は auto なら端末のときだけ付くので、
+// パイプに流したときはタブ区切りのまま崩れない。
+func AttentionText(s model.Snapshot, color bool) string {
+	p := painter{on: color}
+	var b strings.Builder
+	for _, it := range s.Attention {
+		fmt.Fprintf(&b, "%s\t%s\t%s\n", p.sev(it.Severity), it.Project, it.Summary)
+	}
+	return b.String()
+}
+
 func siteCell(p painter, s *model.Site) string {
 	if s == nil {
 		return pad("site -", siteCellWidth)

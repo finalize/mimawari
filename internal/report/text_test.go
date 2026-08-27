@@ -81,6 +81,32 @@ func TestTextNoAttention(t *testing.T) {
 	}
 }
 
+// -quiet の出力。パイプに流す前提なので、タブ区切りが崩れないこと。
+func TestAttentionText(t *testing.T) {
+	out := AttentionText(sample(), false)
+	lines := strings.Split(strings.TrimSpace(out), "\n")
+	if len(lines) != 2 {
+		t.Fatalf("行数 = %d: %q", len(lines), out)
+	}
+	cols := strings.Split(lines[0], "\t")
+	if len(cols) != 3 {
+		t.Fatalf("列数 = %d: %q", len(cols), lines[0])
+	}
+	if strings.TrimSpace(cols[0]) != "action" || cols[1] != "termpic" {
+		t.Errorf("1行目 = %q", lines[0])
+	}
+	if strings.Contains(out, "\x1b[") {
+		t.Error("color=false なのにエスケープ列が入っています")
+	}
+
+	// 何も無ければ何も出さない（|| で繋いだときに空行を出さない）。
+	empty := sample()
+	empty.Attention = nil
+	if got := AttentionText(empty, false); got != "" {
+		t.Errorf("空のはず: %q", got)
+	}
+}
+
 func stripANSI(s string) string {
 	var b strings.Builder
 	for i := 0; i < len(s); {
