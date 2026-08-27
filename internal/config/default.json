@@ -1,0 +1,38 @@
+{
+  "workspace": "~/workspace",
+  "thresholds": {
+    "stale_pr_hours": 24,
+    "stale_issue_days": 14,
+    "slow_site_ms": 1500
+  },
+  "projects": [
+    {
+      "name": "shogo-site",
+      "repo": "finalize/portfolio",
+      "branch": "main",
+      "site": "https://shogo-site.shgysd.workers.dev"
+    },
+    {
+      "name": "contrast-kit",
+      "repo": "finalize/contrast-kit",
+      "branch": "main",
+      "site": "https://contrast-kit.shgysd.workers.dev",
+      "npm": "contrast-kit",
+      "manifest": "contrast-kit/packages/contrast/package.json"
+    },
+    {
+      "name": "termpic",
+      "repo": "finalize/termpic",
+      "branch": "main",
+      "site": "https://termpic.shgysd.workers.dev",
+      "npm": "termpic",
+      "manifest": "termpic/packages/termpic/package.json"
+    },
+    {
+      "name": "hidori",
+      "repo": "finalize/hidori",
+      "branch": "main",
+      "site": "https://hidori.shgysd.workers.dev"
+    }
+  ]
+}
