@@ -166,6 +166,10 @@ func TestRunRecordsErrors(t *testing.T) {
 	if len(snap.Errors) == 0 {
 		t.Fatal("エラーが記録されていません")
 	}
+	// 取れなくても JSON が null にならないこと。
+	if snap.Projects[0].Pulls == nil || snap.Projects[0].Issues == nil {
+		t.Errorf("nil ではなく空スライスを返すこと: %+v", snap.Projects[0])
+	}
 	for _, e := range snap.Errors {
 		if !strings.HasPrefix(e.Source, "github:") {
 			t.Errorf("Source = %q", e.Source)

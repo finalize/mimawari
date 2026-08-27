@@ -75,7 +75,13 @@ func (c *Collector) Run(ctx context.Context) model.Snapshot {
 }
 
 func (c *Collector) one(ctx context.Context, p config.Project, record func(string, []error)) model.Project {
-	out := model.Project{Name: p.Name, Repo: p.Repo}
+	// 取れなかったときに JSON が null にならないよう、空スライスで始める。
+	out := model.Project{
+		Name:   p.Name,
+		Repo:   p.Repo,
+		Pulls:  []model.PullRequest{},
+		Issues: []model.Issue{},
+	}
 
 	var wg sync.WaitGroup
 	wg.Add(3)
@@ -87,7 +93,13 @@ func (c *Collector) one(ctx context.Context, p config.Project, record func(strin
 		}
 		repo, errs := c.GitHub.Fetch(ctx, p.Repo, p.Branch)
 		record("github:"+p.Repo, errs)
-		out.Pulls, out.Issues, out.Release = repo.Pulls, repo.Issues, repo.Release
+		out.Release = repo.Release
+		if repo.Pulls != nil {
+			out.Pulls = repo.Pulls
+		}
+		if repo.Issues != nil {
+			out.Issues = repo.Issues
+		}
 	}()
 
 	go func() {
