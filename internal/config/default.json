@@ -29,6 +29,11 @@
       "manifest": "termpic/packages/termpic/package.json"
     },
     {
+      "name": "mimawari",
+      "repo": "finalize/mimawari",
+      "branch": "main"
+    },
+    {
       "name": "hidori",
       "repo": "finalize/hidori",
       "branch": "main",

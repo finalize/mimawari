@@ -23,6 +23,16 @@ func TestLoadDefault(t *testing.T) {
 	if strings.HasPrefix(c.Workspace, "~") {
 		t.Errorf("workspace の ~ が展開されていません: %q", c.Workspace)
 	}
+	// 自分自身も見回る。CI が落ちたら自分で気づけるように。
+	var found bool
+	for _, p := range c.Projects {
+		if p.Repo == "finalize/mimawari" {
+			found = true
+		}
+	}
+	if !found {
+		t.Error("既定の設定に自分自身が入っていません")
+	}
 }
 
 func TestParseFills(t *testing.T) {
